@@ -4,7 +4,7 @@ import { useCustomFetch } from "./useCustomFetch"
 import { EmployeeResult } from "./types"
 
 export function useEmployees(): EmployeeResult {
-  const { fetchWithCache, loading } = useCustomFetch()
+  const { fetchWithCache, loading, clearCacheByEndpoint } = useCustomFetch()
   const [employees, setEmployees] = useState<Employee[] | null>(null)
 
   const fetchAll = useCallback(async () => {
@@ -14,7 +14,8 @@ export function useEmployees(): EmployeeResult {
 
   const invalidateData = useCallback(() => {
     setEmployees(null)
-  }, [])
+    clearCacheByEndpoint(["employees"])
+  }, [clearCacheByEndpoint])
 
   return { data: employees, loading, fetchAll, invalidateData }
 }

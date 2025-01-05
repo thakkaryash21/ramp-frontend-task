@@ -4,7 +4,7 @@ import { TransactionsByEmployeeResult } from "./types"
 import { useCustomFetch } from "./useCustomFetch"
 
 export function useTransactionsByEmployee(): TransactionsByEmployeeResult {
-  const { fetchWithCache, loading } = useCustomFetch()
+  const { fetchWithCache, loading, clearCacheByEndpoint } = useCustomFetch()
   const [transactionsByEmployee, setTransactionsByEmployee] = useState<Transaction[] | null>(null)
 
   const fetchById = useCallback(
@@ -23,7 +23,8 @@ export function useTransactionsByEmployee(): TransactionsByEmployeeResult {
 
   const invalidateData = useCallback(() => {
     setTransactionsByEmployee(null)
-  }, [])
+    clearCacheByEndpoint(["transactionsByEmployee"])
+  }, [clearCacheByEndpoint])
 
   return { data: transactionsByEmployee, loading, fetchById, invalidateData }
 }
